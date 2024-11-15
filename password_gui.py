@@ -67,6 +67,6 @@ class PasswordGui:
     def run (self):
         self.window.mainloop()
 
-        
-a = PasswordGui() 
-a.run()     
+if __name__ == '__main__':      
+    a = PasswordGui() 
+    a.run()     
