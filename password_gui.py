@@ -7,11 +7,8 @@ class PasswordGui:
     def __init__(self):
         #tkintr dimensions and label
         self.window = tk.Tk()
-        self.window.title('Passwords')
+        self.window.title('Passwords Viewer')
         self.window.geometry('500x500')
-
-        self.window.grid_columnconfigure(0, weight=10)
-        self.window.grid_rowconfigure(1, weight=10)
 
         #text/display area
         self.text_area = tk.Text(self.window)
@@ -31,7 +28,8 @@ class PasswordGui:
         #Check if the script is running with admin privileges.
         try:
             return ctypes.windll.shell32.IsUserAnAdmin()
-        except:
+        except Exception as e:
+            self.text_area.insert(tk.END,f'Error checking admin rights: {e}')
             return False
     
     def initialize(self):
@@ -41,9 +39,6 @@ class PasswordGui:
             # Relaunch the script with admin privileges
             self.text_area.insert('1.0',"Relaunching with administrative privileges...")
             ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-        else:
-            # Run the function as an admin
-            self.generatePass()
 
             
     def generatePass(self):
@@ -62,7 +57,7 @@ class PasswordGui:
                 self.text_area('1.0',f'Error fetching data for {profile}: {e}')
     
         for key,value in wifi_data.items():
-            self.text_area.insert('1.0',f'{key}\t\t{value}')
+            self.text_area.insert(tk.END,f'{key}\t\t{value}')
     
     def run (self):
         self.window.mainloop()
